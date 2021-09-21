@@ -2,6 +2,8 @@
 // FreeCell2021Dlg.cpp : implementation file
 //
 
+#include <vector>
+
 #include "pch.h"
 #include "framework.h"
 #include "FreeCell2021.h"
@@ -136,14 +138,32 @@ BOOL CFreeCell2021Dlg::OnInitDialog()
 	srand(time(0));
 	int index = rand() % 52;
 
-	int deck[51];
 //	for (int cell = 0; cell < 12; cell++) {
 //		mCells[cell]->AddCard(deck[index++]);
 //	}
+	std::vector<int> deck;
 
-	for (int cell = 8; cell < 16; cell++) {
-		for (int index = 0; index < 52; index++) {
-			mCells[cell]->AddCard(index);
+	for (int i = 0; i < 52; i++) {
+		deck.push_back(i);
+	}
+
+
+	while (deck.size() > 0) {
+		for (int cell = 8; cell < 16; cell++) {
+			int lastCard = deck.size() - 1;
+
+			//the first 4 cells get 7 cards each cell after only gets 6 so we need to cut the while loop early
+			// better implementation???
+			if (deck.size() == 0) {
+				break;
+			}
+			//select a random card, put it in back of vector, deal it then pop it
+			// do this on reapeat til we have no more cards
+			int index = rand() % deck.size();
+			std::swap(deck[index], deck[lastCard]);
+			int card = deck[lastCard];
+			deck.pop_back();
+			mCells[cell]->AddCard(card);
 		}
 	}
 
