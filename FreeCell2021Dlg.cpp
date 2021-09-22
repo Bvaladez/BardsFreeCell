@@ -214,7 +214,7 @@ void CFreeCell2021Dlg::OnPaint()
 
 		//Go through each cell and draw  the cards contained in mCards for each cell
 		for (int i = 0; i < 16; i++) {
-			mCells[i]->Draw(dc, clientRect);
+			mCells[i]->Draw(dc, clientRect, mFirstClickedCell==-1);
 		}
 
 		CDialogEx::OnPaint();
@@ -241,7 +241,42 @@ void CFreeCell2021Dlg::OnSize(UINT nType, int cx, int cy)
 
 void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	// Select car when releasing left button
+	CRect rect;
+	GetClientRect(&rect);
+	int w = rect.Width();
+	int h = rect.Height();
+	int x1, x2, x3, x4;
+	int picked = -1;
+	// for each each last card chekc if point in in range
+	for (int cell = 0; cell < 16; cell++) {
+
+	}
+	// user didnt click on card
+	if (picked == -1) {
+		return;
+	}
+	// first clicked cell, source of the move
+	if (mFirstClickedCell == -1) {
+		// only count a first click if a cell has cards
+		if (mCells[picked]->getmCards().size() > 0) {
+			mFirstClickedCell = picked;
+		}
+	}
+	// second click. the picked cell is the destination of the move
+	else { 
+		// TODO: this if needs to check if destination is a valid destination
+		if (mCells[picked]->getmCards().size() == 0) {
+			// get cards in src cell
+			std::vector<int> srcCards = mCells[mFirstClickedCell]->getmCards();
+			// get src card from src cards
+			int srcCard = srcCards[srcCards.size() - 1];
+			// remove src card from src cell
+			mCells[mFirstClickedCell]->pop();
+			// add source card to picked cell
+			mCells[picked]->AddCard(srcCard);
+		}
+
+	}
 
 	CDialogEx::OnLButtonUp(nFlags, point);
 }

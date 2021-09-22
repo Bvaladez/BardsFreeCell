@@ -24,6 +24,7 @@ public:
 // Implementation
 protected:
 	Cell* mCells[16];
+	int mFirstClickedCell;
 
 	HICON m_hIcon;
 

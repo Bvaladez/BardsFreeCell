@@ -24,7 +24,7 @@ CRect MakeDrawRect(CRect& clientRect, double left, double bottom, double right, 
 	return drawRect;
 }
 
-void Cell::Draw(CDC& dc, CRect& clientRect)
+void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 {
 	CRect pixelRect = MakeDrawRect(clientRect, mLeft, mTop, mRight, mBottom);
 	dc.Rectangle(pixelRect);
@@ -47,9 +47,6 @@ void Cell::Draw(CDC& dc, CRect& clientRect)
 
 		DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
 			mCards[i], selected);
-
-		//DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, gCardHeight, 
-			//mCards[i], selected);
 
 		verticalOffset += verticalOffsetPerCard;
 	}
