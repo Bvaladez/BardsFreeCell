@@ -35,7 +35,6 @@ void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 	double verticalOffset = 0;
 
 	for (int i = 0; i < this->mCards.size(); i++) {
-		verticalOffsetPerCard = 4;
 		bool selected = false;
 		int cardIndex = mCards[i];
 

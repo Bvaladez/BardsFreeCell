@@ -247,8 +247,18 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 	int h = rect.Height();
 	int x1, x2, x3, x4;
 	int picked = -1;
-	// for each each last card chekc if point in in range
+	// for each each cell check if point is in range on x and y axis
 	for (int cell = 0; cell < 16; cell++) {
+		// World Quardinates 
+		double x1 = mCells[cell]->getmLeft();
+		double x2 = mCells[cell]->getmRight();
+		double y1 = mCells[cell]->getmBottom();
+		double y2 = mCells[cell]->getmTop();
+	// Where cells are being drawn
+	//	DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
+	//	mCards[i], selected);
+
+
 
 	}
 	// user didnt click on card
