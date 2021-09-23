@@ -12,6 +12,13 @@ Cell::Cell(double left, double top, double right, double bottom) :
 
 }
 
+void Cell::getPixelCoordinates(double x1, double x2, double y1, double y2) {
+	mX1 = x1;
+	mX2 = x2;
+	mY1 = y1;
+	mY1 = y2;
+}
+
 CRect MakeDrawRect(CRect& clientRect, double left, double bottom, double right, double top)
 {
 	int w = clientRect.Width();
@@ -19,7 +26,6 @@ CRect MakeDrawRect(CRect& clientRect, double left, double bottom, double right, 
 
 	// Reset H to maintain an aspect ratio of 1.5, x pixels to y pixels.
 	H = W / w * h * 1.5;
-
 	CRect drawRect((int)(w / W * left), (int)(h / H * bottom), (int)(w / W * right), (int)(h / H * top));
 	return drawRect;
 }

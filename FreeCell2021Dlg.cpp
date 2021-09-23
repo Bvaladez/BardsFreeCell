@@ -241,6 +241,9 @@ void CFreeCell2021Dlg::OnSize(UINT nType, int cx, int cy)
 
 void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	double H = 100;
+	double W = 100;
+
 	CRect rect;
 	GetClientRect(&rect);
 	int w = rect.Width();
@@ -250,16 +253,22 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// for each each cell check if point is in range on x and y axis
 	for (int cell = 0; cell < 16; cell++) {
 		// World Quardinates 
-		double x1 = mCells[cell]->getmLeft();
-		double x2 = mCells[cell]->getmRight();
-		double y1 = mCells[cell]->getmBottom();
-		double y2 = mCells[cell]->getmTop();
-	// Where cells are being drawn
-	//	DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
-	//	mCards[i], selected);
-
-
-
+		double left = mCells[cell]->getmLeft();
+		double right = mCells[cell]->getmRight();
+		double top = mCells[cell]->getmBottom();
+		double bottom = mCells[cell]->getmTop();
+		// convert world coordinates to pixel
+		H = W / w * h * 1.5;
+		double x1World = (int)(w / W * left);
+		double x2World = (int)(w / W * right);
+		double y1World = (int)(h / H * top);
+		double y2World = (int)(h / H * bottom);
+		// check if mouse up click is insinde cell in pixel coordinates
+		double x = point.x;
+		double y = point.y;
+		if (x > x1World && x < x2World && y < y1World && y > y2World) {
+			picked = cell;
+		}
 	}
 	// user didnt click on card
 	if (picked == -1) {
@@ -285,8 +294,11 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 			// add source card to picked cell
 			mCells[picked]->AddCard(srcCard);
 		}
+		mFirstClickedCell = -1;
 
 	}
+
+	Invalidate();
 
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
