@@ -12,13 +12,6 @@ Cell::Cell(double left, double top, double right, double bottom) :
 
 }
 
-void Cell::getPixelCoordinates(double x1, double x2, double y1, double y2) {
-	mX1 = x1;
-	mX2 = x2;
-	mY1 = y1;
-	mY1 = y2;
-}
-
 CRect MakeDrawRect(CRect& clientRect, double left, double bottom, double right, double top)
 {
 	int w = clientRect.Width();

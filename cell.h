@@ -9,7 +9,6 @@ public:
 	void Draw(CDC& dc, CRect & clientRect, bool selected);
 	void AddCard(int index);
 	bool IsClicked(int x, int y); // in pixel coordinates
-	void getPixelCoordinates(double x1, double x2, double y1, double y2);
 	double getmLeft() {return mLeft;}
 	double getmTop() {return mTop;}
 	double getmRight() {return mRight;}
