@@ -103,3 +103,36 @@ bool DrawCardExt(HDC hdc, int left, int top, int dx, int dy, int index, bool sel
 
 	return (ok == 1);
 }
+
+int getIndexFromCard(int suit, int rank) {
+	int index = rank * 4 + suit;
+	return index;
+}
+
+int getSuitFromIndex(int index) {
+	int suit = index%4;
+	return suit;
+}
+
+int getRankFromIndex(int index){
+	int rank = index / 4;
+
+	return rank;
+}
+
+/* index	suit		rank
+   -----	----		----
+	0		clubs		ace
+	1		diamonds	ace
+	2		hearts		ace
+	3		spades		ace
+
+	4		clubs		two
+	...
+
+	48		clubs		king
+	49		diamond		king
+	50		hearts		king
+	51		spaces		king
+*/
+

@@ -116,24 +116,24 @@ BOOL CFreeCell2021Dlg::OnInitDialog()
 	
 
 	// TOP ROW 8 CELLS
-	mCells[0] = new Cell(2, 4, 12, 24);
-	mCells[1] = new Cell(14, 4, 24, 24);
-	mCells[2] = new Cell(26, 4, 36, 24);
-	mCells[3] = new Cell(38, 4, 48, 24);
-	mCells[4] = new Cell(50, 4, 60, 24);
-	mCells[5] = new Cell(62, 4, 72, 24);
-	mCells[6] = new Cell(74, 4, 84, 24);
-	mCells[7] = new Cell(86, 4, 96, 24);
+	mCells[0] = new Cell(2, 4, 12, 24, "FREE");
+	mCells[1] = new Cell(14, 4, 24, 24, "FREE");
+	mCells[2] = new Cell(26, 4, 36, 24, "FREE");
+	mCells[3] = new Cell(38, 4, 48, 24, "FREE");
+	mCells[4] = new Cell(50, 4, 60, 24, "END");
+	mCells[5] = new Cell(62, 4, 72, 24, "END");
+	mCells[6] = new Cell(74, 4, 84, 24, "END");
+	mCells[7] = new Cell(86, 4, 96, 24, "END");
 
 	// BOTTOM ROW 8 CELLS (STACKED)
-	mCells[8] = new Cell(2, 28, 12, 96);
-	mCells[9] = new Cell(14, 28, 24, 96);
-	mCells[10] = new Cell(26, 28, 36, 96);
-	mCells[11] = new Cell(38, 28, 48, 96);
-	mCells[12] = new Cell(50, 28, 60, 96);
-	mCells[13] = new Cell(62, 28, 72, 96);
-	mCells[14] = new Cell(74, 28, 84, 96);
-	mCells[15] = new Cell(86, 28, 96, 96);
+	mCells[8] = new Cell(2, 28, 12, 96, "START");
+	mCells[9] = new Cell(14, 28, 24, 96, "START");
+	mCells[10] = new Cell(26, 28, 36, 96, "START");
+	mCells[11] = new Cell(38, 28, 48, 96, "START");
+	mCells[12] = new Cell(50, 28, 60, 96, "START");
+	mCells[13] = new Cell(62, 28, 72, 96, "START");
+	mCells[14] = new Cell(74, 28, 84, 96, "START");
+	mCells[15] = new Cell(86, 28, 96, 96, "START");
 
 	srand(time(0));
 	int index = rand() % 52;
@@ -214,7 +214,11 @@ void CFreeCell2021Dlg::OnPaint()
 
 		//Go through each cell and draw  the cards contained in mCards for each cell
 		for (int i = 0; i < 16; i++) {
-			mCells[i]->Draw(dc, clientRect, mFirstClickedCell==-1);
+			bool selected = false; // 0 for face up 2 for highlighted
+			if (mFirstClickedCell == i) {
+				selected = true;
+			}
+			mCells[i]->Draw(dc, clientRect, selected);
 		}
 
 		CDialogEx::OnPaint();
@@ -283,22 +287,41 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	// second click. the picked cell is the destination of the move
 	else { 
-		// TODO: this if needs to check if destination is a valid destination
-		if (mCells[picked]->getmCards().size() == 0) {
-			// get cards in src cell
-			std::vector<int> srcCards = mCells[mFirstClickedCell]->getmCards();
-			// get src card from src cards
-			int srcCard = srcCards[srcCards.size() - 1];
-			// remove src card from src cell
-			mCells[mFirstClickedCell]->pop();
-			// add source card to picked cell
-			mCells[picked]->AddCard(srcCard);
-		}
-		mFirstClickedCell = -1;
+		Cell* dstCell = mCells[picked];
+		Cell* srcCell = mCells[mFirstClickedCell];
+		std::vector<int> srcCards = srcCell->getmCards();
+		std::vector<int> dstCards = dstCell->getmCards();
+		int srcSize = srcCards.size();
 
+		// MOVING FROM STARTCELL TO FREECELL
+		if (dstCell->getType() == "FREE" && srcCell->getType() == "START"
+			&& dstCards.size() == 0) {
+			swapCards(mFirstClickedCell, picked);
+		}
+		// MOVING FROM STARTCELL TO STATCELL
+		if (srcCell->getType() == "START" && dstCell->getType() == "START" 
+			&& srcCards.size() > 0) {
+			swapCards(mFirstClickedCell, picked);
+
+		}
+
+		mFirstClickedCell = -1;
 	}
 
 	Invalidate();
 
 	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+// Swap card from src cell to dst cell
+void CFreeCell2021Dlg::swapCards(int src, int dst) {
+	// get cards in src cell
+	std::vector<int> srcCards = mCells[src]->getmCards();
+	// get src card from src cards
+	int srcCard = srcCards[srcCards.size() - 1];
+	// remove src card from src cell
+	mCells[src]->pop();
+	// add source card to picked cell
+	mCells[dst]->AddCard(srcCard);
+
 }

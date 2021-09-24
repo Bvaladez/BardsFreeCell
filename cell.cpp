@@ -6,8 +6,8 @@
 double W = 100;
 double H = 100;
 
-Cell::Cell(double left, double top, double right, double bottom) :
-	mLeft(left), mTop(top), mRight(right), mBottom(bottom)
+Cell::Cell(double left, double top, double right, double bottom, std::string type) :
+	mLeft(left), mTop(top), mRight(right), mBottom(bottom), mType(type)
 {
 
 }

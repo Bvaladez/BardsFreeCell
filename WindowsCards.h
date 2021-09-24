@@ -18,6 +18,9 @@ bool InitializeCards();
 bool DrawCard(HDC hdc, int left, int top, int index, bool selected = false); // index is 0 to 51, for the different cards.
 bool DrawCardExt(HDC hdc, int left, int top, int dx, int dy, int index, bool selected = false);
 bool UninstallCards();
+int getIndexFromCard(int suit, int rank);
+int getRankFromIndex(int index);
+int getSuitFromIndex(int index);
 
 // The card width and height get set in InitializeCards:
 extern int gCardWidth; // 71 pixels

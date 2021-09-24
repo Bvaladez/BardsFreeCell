@@ -11,6 +11,7 @@ class CFreeCell2021Dlg : public CDialogEx
 // Construction
 public:
 	CFreeCell2021Dlg(CWnd* pParent = nullptr);	// standard constructor
+	void swapCards(int src, int dst);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
