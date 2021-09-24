@@ -34,7 +34,6 @@ void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 	double verticalOffset = 0;
 
 	for (int i = 0; i < this->mCards.size(); i++) {
-		bool selected = false;
 		int cardIndex = mCards[i];
 
 		pixelRect = MakeDrawRect(clientRect, mLeft, mTop + verticalOffset, mRight, mBottom + verticalOffset);
@@ -42,9 +41,16 @@ void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 		// deteremine what value is small and use that for the card height
 		// This stops cards from scaling vertically to fill the entire cell but still scale down when the window is shrunk
 		int cardHeight = gCardHeight < pixelRect.Height() ? gCardHeight : pixelRect.Height();
+		// only draw the last card in the cell as selected as its the only one that will do any moving
+		if (selected && i == (this->mCards.size() - 1)) {
+			DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
+				mCards[i], selected);
+		}
+		else {
+			DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
+			mCards[i], false);
+		}
 
-		DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
-			mCards[i], selected);
 
 		verticalOffset += verticalOffsetPerCard;
 	}

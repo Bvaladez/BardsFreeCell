@@ -38,4 +38,11 @@ protected:
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+
+	int getIndexFromCard(int suit, int rank);
+	int getRankFromIndex(int index);
+	int getSuitFromIndex(int index);
+	int getColorFromSuit(int suit);
+
+
 };

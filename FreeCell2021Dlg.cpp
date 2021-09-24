@@ -292,6 +292,7 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 		std::vector<int> srcCards = srcCell->getmCards();
 		std::vector<int> dstCards = dstCell->getmCards();
 		int srcSize = srcCards.size();
+		int dstSize = dstCards.size();
 
 		// MOVING FROM STARTCELL TO FREECELL
 		if (dstCell->getType() == "FREE" && srcCell->getType() == "START"
@@ -301,8 +302,17 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 		// MOVING FROM STARTCELL TO STATCELL
 		if (srcCell->getType() == "START" && dstCell->getType() == "START" 
 			&& srcCards.size() > 0) {
-			swapCards(mFirstClickedCell, picked);
-
+			// given a dst is a startCell with no cards all moves are legal
+			if (dstCards.size() == 0) {
+				swapCards(mFirstClickedCell, picked);
+			}
+			// src cards and dst cards have cards in them check for color and value legality
+			else if (getColorFromSuit(getSuitFromIndex(srcCards[srcSize - 1])) 
+				!= getColorFromSuit(getSuitFromIndex(dstCards[dstSize - 1]))
+				&& getRankFromIndex(srcCards[srcSize - 1]) 
+				== getRankFromIndex(dstCards[dstSize - 1]) - 1){
+				swapCards(mFirstClickedCell, picked);
+			}
 		}
 
 		mFirstClickedCell = -1;
@@ -325,3 +335,55 @@ void CFreeCell2021Dlg::swapCards(int src, int dst) {
 	mCells[dst]->AddCard(srcCard);
 
 }
+
+/* index	suit		rank
+   -----	----		----
+	0		clubs		ace
+	1		diamonds	ace
+	2		hearts		ace
+	3		spades		ace
+
+	4		clubs		two
+	...
+
+	48		clubs		king
+	49		diamond		king
+	50		hearts		king
+	51		spaces		king
+*/
+
+
+int CFreeCell2021Dlg::getIndexFromCard(int suit, int rank) {
+	int index = rank * 4 + suit;
+	return index;
+}
+
+int CFreeCell2021Dlg::getSuitFromIndex(int index) {
+	int suit = index%4;
+	return suit;
+}
+
+int CFreeCell2021Dlg::getRankFromIndex(int index){
+	int rank = index / 4;
+
+	return rank;
+}
+
+int CFreeCell2021Dlg::getColorFromSuit(int suit) {
+	if (suit == 0) {
+		return 0;
+	}
+	if (suit == 1) {
+		return 1;
+	}
+	if (suit == 2) {
+		return 1;
+	}
+	if (suit == 3) {
+		return 0;
+	}
+
+
+
+}
+
