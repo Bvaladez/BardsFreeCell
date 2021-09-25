@@ -314,6 +314,12 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 				swapCards(mFirstClickedCell, picked);
 			}
 		}
+		// MOVING FROM A STARTCELL OR FREECELL TO ENDCELL
+		if ((srcCell->getType() == "START" || srcCell->getType() == "FREE") && dstCell->getType() == "END" ) {
+			if (dstCell->getmCards().size() == 0 && (srcCards[srcSize - 1] == 0) || (srcCards[srcSize - 1] == 1) || (srcCards[srcSize - 1] == 2) || (srcCards[srcSize - 1] == 3)) {
+				swapCards(mFirstClickedCell, picked);
+			}
+		}
 
 		mFirstClickedCell = -1;
 	}
@@ -368,7 +374,7 @@ int CFreeCell2021Dlg::getRankFromIndex(int index){
 
 	return rank;
 }
-
+// zero is black (clubs, spades) 1 is red (hearts, diamonds).
 int CFreeCell2021Dlg::getColorFromSuit(int suit) {
 	if (suit == 0) {
 		return 0;
