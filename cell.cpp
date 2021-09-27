@@ -30,7 +30,10 @@ void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 
 	// Draw cars within cell
 	int inset = 2;
-	double verticalOffsetPerCard = 4;
+	double verticalOffsetPerCard;
+
+	this->getType() == "END" ? verticalOffsetPerCard = 0 : verticalOffsetPerCard = 4;
+
 	double verticalOffset = 0;
 
 	for (int i = 0; i < this->mCards.size(); i++) {

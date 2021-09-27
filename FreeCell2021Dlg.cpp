@@ -299,24 +299,45 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 			&& dstCards.size() == 0) {
 			swapCards(mFirstClickedCell, picked);
 		}
-		// MOVING FROM STARTCELL TO STATCELL
-		if (srcCell->getType() == "START" && dstCell->getType() == "START" 
+		// MOVING FROM STARTCELL TO STARTCELL OR FREECELL TO STARTCELL
+		if ((srcCell->getType() == "START" || srcCell->getType() == "FREE" ) && dstCell->getType() == "START" 
 			&& srcCards.size() > 0) {
 			// given a dst is a startCell with no cards all moves are legal
 			if (dstCards.size() == 0) {
 				swapCards(mFirstClickedCell, picked);
 			}
 			// src cards and dst cards have cards in them check for color and value legality
-			else if (getColorFromSuit(getSuitFromIndex(srcCards[srcSize - 1])) 
-				!= getColorFromSuit(getSuitFromIndex(dstCards[dstSize - 1]))
-				&& getRankFromIndex(srcCards[srcSize - 1]) 
-				== getRankFromIndex(dstCards[dstSize - 1]) - 1){
-				swapCards(mFirstClickedCell, picked);
+			// we need to move the highest suit card possible so if the entire src cell is in order to be added to another startcell we move the entire cell
+			bool swap = true;
+			for (int i = 0; i < srcSize; i++) {
+				if (getColorFromSuit(getSuitFromIndex(srcCards[i])) != getColorFromSuit(getSuitFromIndex(dstCards[dstSize - 1]))
+					&& getRankFromIndex(srcCards[i]) == getRankFromIndex(dstCards[dstSize - 1]) - 1) {
+					// we found the first card in the cell that could be transfered make ssure the following cards obey the rules too then swap all cards
+					for (int j = i; j < srcSize - 1; j++) {
+						if (getColorFromSuit(getSuitFromIndex(srcCards[i + 1])) != getColorFromSuit(getSuitFromIndex(srcCards[i]))
+							&& getRankFromIndex(srcCards[i + 1]) == getRankFromIndex(srcCards[i]) - 1) {
+						}
+						else {
+							// if we find a card that doesnt obey we stop checking the rest and move down the list of canidate cards in the src cell
+							swap = false;
+							break;
+						}
+					}
+					if (swap){
+
+					}
+				}
 			}
 		}
+
 		// MOVING FROM A STARTCELL OR FREECELL TO ENDCELL
 		if ((srcCell->getType() == "START" || srcCell->getType() == "FREE") && dstCell->getType() == "END" ) {
-			if (dstCell->getmCards().size() == 0 && (srcCards[srcSize - 1] == 0) || (srcCards[srcSize - 1] == 1) || (srcCards[srcSize - 1] == 2) || (srcCards[srcSize - 1] == 3)) {
+			if (dstSize == 0 && (srcCards[srcSize - 1] == 0) || (srcCards[srcSize - 1] == 1) || (srcCards[srcSize - 1] == 2) || (srcCards[srcSize - 1] == 3)) {
+				swapCards(mFirstClickedCell, picked);
+			}
+			else if (dstSize != 0
+				&& getRankFromIndex(srcCards[srcSize - 1]) == getRankFromIndex(dstCards[dstSize - 1]) + 1
+				&& getSuitFromIndex(srcCards[srcSize - 1]) == getSuitFromIndex(dstCards[dstSize - 1])) {
 				swapCards(mFirstClickedCell, picked);
 			}
 		}
@@ -340,6 +361,22 @@ void CFreeCell2021Dlg::swapCards(int src, int dst) {
 	// add source card to picked cell
 	mCells[dst]->AddCard(srcCard);
 
+}
+// move all cards from srcCard to end onto the end of dst
+void CFreeCell2021Dlg::swapAllCards(int srcCardIdx, int srcCell, int dst) {
+	std::vector<int> srcCards = mCells[srcCell]->getmCards();
+	// for every card starting at src to end move to dst cell
+	for (int i = srcCardIdx; i < srcCards.size(); i++) {
+		int srcCardIdx = srcCards[i];
+		mCells[dst]->AddCard(srcCardIdx);
+	}
+
+	for (int j = srcCardIdx; j < srcCards.size(); j++) {
+
+
+	}
+
+	
 }
 
 /* index	suit		rank
