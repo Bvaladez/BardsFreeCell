@@ -209,8 +209,23 @@ void CFreeCell2021Dlg::OnPaint()
 	else
 	{
 		CPaintDC dc(this); // device context for painting
+		COLORREF backGroundColor = RGB(50, 255, 25);
+		CBrush backgroundBrush(backGroundColor);
+		dc.SelectObject(backgroundBrush);
+
+
 		CRect clientRect;
-		GetClientRect(&clientRect);
+			GetClientRect(&clientRect);
+
+		// Brush is for fill color
+		// Pen is for outline color
+		dc.SelectStockObject(WHITE_BRUSH);
+		dc.SelectStockObject(BLACK_PEN);
+		// Homemade Green Brush and Blue Pen, using variables:
+		COLORREF greenColor(RGB(0, 190, 0));
+		CBrush greenBrush;
+		greenBrush.CreateSolidBrush(greenColor);
+		dc.SelectObject(&greenBrush);
 
 		//Go through each cell and draw  the cards contained in mCards for each cell
 		for (int i = 0; i < 16; i++) {
@@ -324,7 +339,7 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 						}
 					}
 					if (swap){
-
+						swapAllCards(i,mFirstClickedCell,picked);
 					}
 				}
 			}
@@ -367,15 +382,12 @@ void CFreeCell2021Dlg::swapAllCards(int srcCardIdx, int srcCell, int dst) {
 	std::vector<int> srcCards = mCells[srcCell]->getmCards();
 	// for every card starting at src to end move to dst cell
 	for (int i = srcCardIdx; i < srcCards.size(); i++) {
-		int srcCardIdx = srcCards[i];
-		mCells[dst]->AddCard(srcCardIdx);
+		mCells[dst]->AddCard(srcCards[i]);
 	}
 
 	for (int j = srcCardIdx; j < srcCards.size(); j++) {
-
-
+		mCells[srcCell]->pop();
 	}
-
 	
 }
 

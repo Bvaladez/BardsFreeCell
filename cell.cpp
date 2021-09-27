@@ -28,7 +28,7 @@ void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 	CRect pixelRect = MakeDrawRect(clientRect, mLeft, mTop, mRight, mBottom);
 	dc.Rectangle(pixelRect);
 
-	// Draw cars within cell
+	// Draw cards within cell
 	int inset = 2;
 	double verticalOffsetPerCard;
 
