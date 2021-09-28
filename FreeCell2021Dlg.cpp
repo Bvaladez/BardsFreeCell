@@ -208,14 +208,13 @@ void CFreeCell2021Dlg::OnPaint()
 	}
 	else
 	{
-		CPaintDC dc(this); // device context for painting
 		COLORREF backGroundColor = RGB(50, 255, 25);
 		CBrush backgroundBrush(backGroundColor);
+
+		CPaintDC dc(this); // device context for painting
 		dc.SelectObject(backgroundBrush);
-
-
 		CRect clientRect;
-			GetClientRect(&clientRect);
+		GetClientRect(&clientRect);
 
 		// Brush is for fill color
 		// Pen is for outline color
