@@ -49,7 +49,6 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-
 // CFreeCell2021Dlg dialog
 
 
@@ -71,6 +70,7 @@ BEGIN_MESSAGE_MAP(CFreeCell2021Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_SIZE()
 	ON_WM_LBUTTONUP()
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -441,3 +441,17 @@ int CFreeCell2021Dlg::getColorFromSuit(int suit) {
 
 }
 
+
+
+HBRUSH CFreeCell2021Dlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+	HBRUSH backGround = CreateSolidBrush(RGB(20,101,19));
+	return backGround;
+	//return (HBRUSH)GetStockObject(BLACK_BRUSH);
+
+	// TODO:  Change any attributes of the DC here
+
+	// TODO:  Return a different brush if the default is not desired
+	//return hbr;
+}

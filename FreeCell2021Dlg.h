@@ -20,7 +20,6 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-
 // Implementation
 protected:
 	Cell* mCells[16];
@@ -46,4 +45,5 @@ public:
 	void CFreeCell2021Dlg::swapAllCards(int startIndex, int src, int dst);
 
 
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
