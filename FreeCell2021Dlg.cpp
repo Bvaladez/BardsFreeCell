@@ -327,6 +327,9 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 				if (getColorFromSuit(getSuitFromIndex(srcCards[i])) != getColorFromSuit(getSuitFromIndex(dstCards[dstSize - 1]))
 					&& getRankFromIndex(srcCards[i]) == getRankFromIndex(dstCards[dstSize - 1]) - 1) {
 					// we found the first card in the cell that could be transfered make ssure the following cards obey the rules too then swap all cards
+					if (i == srcSize - 1) {
+						swapCards(mFirstClickedCell, picked);
+					}
 					for (int j = i; j < srcSize - 1; j++) {
 						if (getColorFromSuit(getSuitFromIndex(srcCards[i + 1])) != getColorFromSuit(getSuitFromIndex(srcCards[i]))
 							&& getRankFromIndex(srcCards[i + 1]) == getRankFromIndex(srcCards[i]) - 1) {
