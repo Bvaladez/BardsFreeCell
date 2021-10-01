@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CFreeCell2021Dlg, CDialogEx)
 	ON_WM_SIZE()
 	ON_WM_LBUTTONUP()
 	ON_WM_CTLCOLOR()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -457,4 +458,17 @@ HBRUSH CFreeCell2021Dlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	// TODO:  Return a different brush if the default is not desired
 	//return hbr;
+}
+
+
+void CFreeCell2021Dlg::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+	for (int i = 0; i < 16; i++) {
+		delete mCells[i];
+	}
+	UninstallCards();
+
+
+	CDialogEx::OnClose();
 }
