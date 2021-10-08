@@ -209,23 +209,35 @@ void CFreeCell2021Dlg::OnPaint()
 	}
 	else
 	{
-		COLORREF backGroundColor = RGB(50, 255, 25);
-		CBrush backgroundBrush(backGroundColor);
+		//COLORREF backGroundColor = RGB(50, 255, 25);
+		//CBrush backgroundBrush(backGroundColor);
 
 		CPaintDC dc(this); // device context for painting
-		dc.SelectObject(backgroundBrush);
-		CRect clientRect;
-		GetClientRect(&clientRect);
+		//dc.SelectObject(backgroundBrush);
+		//CRect clientRect;
+		//GetClientRect(&clientRect);
 
-		// Brush is for fill color
-		// Pen is for outline color
-		dc.SelectStockObject(WHITE_BRUSH);
-		dc.SelectStockObject(BLACK_PEN);
-		// Homemade Green Brush and Blue Pen, using variables:
-		COLORREF greenColor(RGB(0, 190, 0));
+		//// Brush is for fill color
+		//// Pen is for outline color
+		//dc.SelectStockObject(WHITE_BRUSH);
+		//dc.SelectStockObject(BLACK_PEN);
+		//// Homemade Green Brush and Blue Pen, using variables:
+		//COLORREF greenColor(RGB(0, 190, 0));
+		//CBrush greenBrush;
+		//greenBrush.CreateSolidBrush(greenColor);
+		//dc.SelectObject(&greenBrush);
+
+		// Draw the backgroud:
+		CRect rcClipBox;
+		dc.GetClipBox(rcClipBox);
+		COLORREF gcBackgroundColor = (RGB(10, 100, 10)); // your choice!
+		dc.FillSolidRect(rcClipBox, gcBackgroundColor);
+
+		COLORREF greenColor(RGB(215, 215, 215));
 		CBrush greenBrush;
 		greenBrush.CreateSolidBrush(greenColor);
 		dc.SelectObject(&greenBrush);
+
 
 		//Go through each cell and draw  the cards contained in mCards for each cell
 		for (int i = 0; i < 16; i++) {
@@ -233,7 +245,8 @@ void CFreeCell2021Dlg::OnPaint()
 			if (mFirstClickedCell == i) {
 				selected = true;
 			}
-			mCells[i]->Draw(dc, clientRect, selected);
+			//mCells[i]->Draw(dc, clientRect, selected);
+			mCells[i]->Draw(dc, rcClipBox, selected);
 		}
 
 		CDialogEx::OnPaint();
