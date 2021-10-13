@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CFreeCell2021Dlg, CDialogEx)
 	ON_WM_LBUTTONUP()
 	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
+	ON_COMMAND(ID_FILE_QUIT, &CFreeCell2021Dlg::OnFileQuit)
 END_MESSAGE_MAP()
 
 
@@ -139,15 +140,11 @@ BOOL CFreeCell2021Dlg::OnInitDialog()
 	srand(time(0));
 	int index = rand() % 52;
 
-//	for (int cell = 0; cell < 12; cell++) {
-//		mCells[cell]->AddCard(deck[index++]);
-//	}
 	std::vector<int> deck;
 
 	for (int i = 0; i < 52; i++) {
 		deck.push_back(i);
 	}
-
 
 	while (deck.size() > 0) {
 		for (int cell = 8; cell < 16; cell++) {
@@ -166,10 +163,46 @@ BOOL CFreeCell2021Dlg::OnInitDialog()
 			deck.pop_back();
 			mCells[cell]->AddCard(card);
 		}
+		mUseImages = false;
+		mUseImages = LoadImages(L"Scooby.deck");
 	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
+
+bool CFreeCell2021Dlg::LoadImages(const CString& theDeck) {
+	std::ifstream fin(theDeck);
+	if (!fin) {
+		MessageBox(L"Error Opening the deck! Using Windows cards.", L"Problem!");
+		// go back to the default deck
+		for (int i = 0; i < 52; i++) {
+			mCardImages[i].Destroy();
+		}
+		return false;
+	}
+
+	int i = 0;
+	while (i < 52) {
+		// Get next line
+		char line[1000];
+		fin.getline(line, 1000);
+		CString cardPath;
+		cardPath += line;
+		mCardImages[i].Destroy(); // remove and previous image
+		HRESULT hr = mCardImages[i].Load(cardPath);
+		if (hr != S_OK) {
+			MessageBox(L"Error Opening the deck! Using Windows cards.", L"Problem!");
+			// go back to defualt deck
+			for (int i = 0; i < 52; i++) {
+				mCardImages[i].Destroy();
+			}
+			return false;
+		}
+		i++;
+	}
+	return true;
+}
+
 
 void CFreeCell2021Dlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
@@ -209,23 +242,8 @@ void CFreeCell2021Dlg::OnPaint()
 	}
 	else
 	{
-		//COLORREF backGroundColor = RGB(50, 255, 25);
-		//CBrush backgroundBrush(backGroundColor);
 
 		CPaintDC dc(this); // device context for painting
-		//dc.SelectObject(backgroundBrush);
-		//CRect clientRect;
-		//GetClientRect(&clientRect);
-
-		//// Brush is for fill color
-		//// Pen is for outline color
-		//dc.SelectStockObject(WHITE_BRUSH);
-		//dc.SelectStockObject(BLACK_PEN);
-		//// Homemade Green Brush and Blue Pen, using variables:
-		//COLORREF greenColor(RGB(0, 190, 0));
-		//CBrush greenBrush;
-		//greenBrush.CreateSolidBrush(greenColor);
-		//dc.SelectObject(&greenBrush);
 
 		// Draw the backgroud:
 		CRect rcClipBox;
@@ -246,7 +264,7 @@ void CFreeCell2021Dlg::OnPaint()
 				selected = true;
 			}
 			//mCells[i]->Draw(dc, clientRect, selected);
-			mCells[i]->Draw(dc, rcClipBox, selected);
+			mCells[i]->Draw(dc, rcClipBox, mUseImages, mCardImages, selected);
 		}
 
 		CDialogEx::OnPaint();
@@ -340,7 +358,7 @@ void CFreeCell2021Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 			for (int i = 0; i < srcSize; i++) {
 				if (getColorFromSuit(getSuitFromIndex(srcCards[i])) != getColorFromSuit(getSuitFromIndex(dstCards[dstSize - 1]))
 					&& getRankFromIndex(srcCards[i]) == getRankFromIndex(dstCards[dstSize - 1]) - 1) {
-					// we found the first card in the cell that could be transfered make ssure the following cards obey the rules too then swap all cards
+					// we found the first card in the cell that could be transfered make sure the following cards obey the rules too then swap all cards
 					if (i == srcSize - 1) {
 						swapCards(mFirstClickedCell, picked);
 					}
@@ -484,4 +502,10 @@ void CFreeCell2021Dlg::OnClose()
 
 
 	CDialogEx::OnClose();
+}
+
+
+void CFreeCell2021Dlg::OnFileQuit()
+{
+	CWnd::SendMessage(WM_CLOSE, 0, 0);
 }

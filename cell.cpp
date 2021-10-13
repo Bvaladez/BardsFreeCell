@@ -23,8 +23,8 @@ CRect MakeDrawRect(CRect& clientRect, double left, double bottom, double right, 
 	return drawRect;
 }
 
-void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
-{
+void Cell::Draw(CDC& dc, CRect & clientRect, bool useImages,CImage cardImages[51], bool selected){
+
 	CRect pixelRect = MakeDrawRect(clientRect, mLeft, mTop, mRight, mBottom);
 	dc.Rectangle(pixelRect);
 
@@ -37,25 +37,22 @@ void Cell::Draw(CDC& dc, CRect& clientRect, bool selected)
 	double verticalOffset = 0;
 
 	for (int i = 0; i < this->mCards.size(); i++) {
-		int cardIndex = mCards[i];
 
 		pixelRect = MakeDrawRect(clientRect, mLeft, mTop + verticalOffset, mRight, mBottom + verticalOffset);
-
-		// deteremine what value is small and use that for the card height
-		// This stops cards from scaling vertically to fill the entire cell but still scale down when the window is shrunk
 		int cardHeight = gCardHeight < pixelRect.Height() ? gCardHeight : pixelRect.Height();
-		// only draw the last card in the cell as selected as its the only one that will do any moving
-		if (selected && i == (this->mCards.size() - 1)) {
-			DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
-				mCards[i], selected);
+		if (useImages) {
+			int index = mCards[i];
+			CImage& localCopy = cardImages[index];
+			if (!localCopy.IsNull()) {
+				BOOL ok = localCopy.StretchBlt(dc, pixelRect.left + inset, pixelRect.top + inset,
+					pixelRect.Width() - 2 * inset, pixelRect.Height() - 2 * inset, SRCCOPY);
+			}
 		}
 		else {
 			DrawCardExt(dc, pixelRect.left + inset, pixelRect.top + inset, pixelRect.Width() - 2 * inset, cardHeight,
-			mCards[i], false);
+			mCards[i], selected && i == mCards.size() -1);
 		}
-
-
-		verticalOffset += verticalOffsetPerCard;
+			verticalOffset += verticalOffsetPerCard;
 	}
 }
 

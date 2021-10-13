@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include <fstream>
 #include "cell.h"
 
 // CFreeCell2021Dlg dialog
@@ -24,6 +25,9 @@ public:
 protected:
 	Cell* mCells[16];
 	int mFirstClickedCell = -1;
+	bool LoadImages(const CString& theDeck);
+	CImage mCardImages[52];
+	bool mUseImages;
 
 	HICON m_hIcon;
 
@@ -47,4 +51,5 @@ public:
 
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnClose();
+	afx_msg void OnFileQuit();
 };

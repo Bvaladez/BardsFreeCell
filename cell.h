@@ -7,7 +7,7 @@ class Cell
 public:
 	Cell(double left, double top, double right, double bottom, std::string type);
 	//bool IsEmpty();
-	void Draw(CDC& dc, CRect & clientRect, bool selected);
+	void Draw(CDC& dc, CRect & clientRect, bool useImages,CImage cardImages[51], bool selected);
 	void AddCard(int index);
 	bool IsClicked(int x, int y); // in pixel coordinates
 	double getmLeft() {return mLeft;}
