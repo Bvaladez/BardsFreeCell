@@ -66,6 +66,9 @@
     <None Include="res\FreeCell2021.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Scooby.deck">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\FreeCell2021.ico">

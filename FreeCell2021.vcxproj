@@ -211,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\FreeCell2021.rc2" />
+    <None Include="Scooby.deck" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\FreeCell2021.ico" />
