@@ -73,6 +73,9 @@ BEGIN_MESSAGE_MAP(CFreeCell2021Dlg, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_FILE_QUIT, &CFreeCell2021Dlg::OnFileQuit)
+	ON_COMMAND(ID_FILE_SCOOBYCARDS, &CFreeCell2021Dlg::OnFileScoobycards)
+	ON_COMMAND(ID_FILE_DEFAULTCARDS, &CFreeCell2021Dlg::OnFileDefaultcards)
+	ON_COMMAND(ID_FILE_NEWGAME, &CFreeCell2021Dlg::OnFileNewgame)
 END_MESSAGE_MAP()
 
 
@@ -264,7 +267,7 @@ void CFreeCell2021Dlg::OnPaint()
 				selected = true;
 			}
 			//mCells[i]->Draw(dc, clientRect, selected);
-			mCells[i]->Draw(dc, rcClipBox, mUseImages, mCardImages, selected);
+			mCells[i]->Draw(dc, rcClipBox, mUseImages && mEnabledImages, mCardImages, selected);
 		}
 
 		CDialogEx::OnPaint();
@@ -508,4 +511,24 @@ void CFreeCell2021Dlg::OnClose()
 void CFreeCell2021Dlg::OnFileQuit()
 {
 	CWnd::SendMessage(WM_CLOSE, 0, 0);
+}
+
+
+void CFreeCell2021Dlg::OnFileScoobycards()
+{
+	mEnabledImages = true;
+	Invalidate();
+}
+
+
+void CFreeCell2021Dlg::OnFileDefaultcards()
+{
+	mEnabledImages = false;
+}
+
+
+void CFreeCell2021Dlg::OnFileNewgame()
+{
+	this->OnInitDialog();
+	Invalidate();
 }

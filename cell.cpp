@@ -45,7 +45,7 @@ void Cell::Draw(CDC& dc, CRect & clientRect, bool useImages,CImage cardImages[51
 			CImage& localCopy = cardImages[index];
 			if (!localCopy.IsNull()) {
 				BOOL ok = localCopy.StretchBlt(dc, pixelRect.left + inset, pixelRect.top + inset,
-					pixelRect.Width() - 2 * inset, pixelRect.Height() - 2 * inset, SRCCOPY);
+					pixelRect.Width() - 2 * inset, cardHeight, SRCCOPY);
 			}
 		}
 		else {

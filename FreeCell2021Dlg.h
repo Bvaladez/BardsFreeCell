@@ -28,6 +28,7 @@ protected:
 	bool LoadImages(const CString& theDeck);
 	CImage mCardImages[52];
 	bool mUseImages;
+	bool mEnabledImages;
 
 	HICON m_hIcon;
 
@@ -52,4 +53,7 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnClose();
 	afx_msg void OnFileQuit();
+	afx_msg void OnFileScoobycards();
+	afx_msg void OnFileDefaultcards();
+	afx_msg void OnFileNewgame();
 };
